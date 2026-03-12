@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanjay S | LLM - Python Engineer</title>
+    
+    <!-- Favicon (Python/Terminal Theme) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+    
+    <!-- Modern Tech Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS VARIABLES --- */
+        :root {
+            --bg-deep: #050505;
+            --grid-color: rgba(0, 242, 254, 0.05);
+            --neon-cyan: #00f2fe;
+            --neon-purple: #b026ff;
+            --card-glass: rgba(15, 23, 42, 0.6);
+            --text-main: #e2e8f0;
+            --text-dim: #94a3b8;
+            --code-green: #4ade80;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            position: relative;
+        }
+
+        /* --- INTRO ANIMATION (SYSTEM BOOT) --- */
+        #intro-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #020202;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 10%;
+            font-family: 'Fira Code', monospace;
+            color: var(--code-green);
+            transition: opacity 0.8s ease-out;
+        }
+        .intro-line {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: bootUp 0.5s forwards;
+        }
+        @keyframes bootUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Ambient Cursor Glow */
+        #cursor-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            transition: top 0.1s, left 0.1s;
+        }
+
+        /* Typography & Headings */
+        .code-font { font-family: 'Fira Code', monospace; }
+        
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title span {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--neon-cyan);
+            text-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 20px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem; font-weight: 700; color: #fff; text-decoration: none;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .logo i { color: var(--neon-cyan); }
+
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a {
+            color: var(--text-dim); text-decoration: none; font-size: 1rem;
+            transition: var(--transition); letter-spacing: 1px;
+        }
+        .nav-links a:hover { color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); }
+
+        /* General Layout */
+        section { padding: 120px 5% 60px; position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; }
+
+        /* --- HERO SECTION --- */
+        #home {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: space-between; gap: 50px;
+        }
+
+        .hero-text { flex: 1; }
+        .hero-text h3 { color: var(--neon-purple); font-size: 1.2rem; margin-bottom: 10px; letter-spacing: 2px; text-transform: uppercase; }
+        .hero-text h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px; text-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        .hero-text p { font-size: 1.1rem; color: var(--text-dim); margin-bottom: 30px; max-width: 500px; }
+
+        .btn-glow {
+            display: inline-block; padding: 12px 30px;
+            background: transparent; color: var(--neon-cyan);
+            border: 1px solid var(--neon-cyan); border-radius: 4px;
+            font-family: 'Fira Code', monospace; text-decoration: none;
+            transition: var(--transition); position: relative; overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2) inset;
+            cursor: pointer;
+        }
+
+        .btn-glow:hover {
+            background: var(--neon-cyan); color: #000;
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        /* Terminal Window */
+        .terminal {
+            flex: 1; background: #0a0e17; border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            overflow: hidden; max-width: 550px;
+        }
+
+        .terminal-header {
+            background: #151b29; padding: 10px; display: flex; gap: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot.r { background: #ff5f56; } .dot.y { background: #ffbd2e; } .dot.g { background: #27c93f; }
+
+        .terminal-body { padding: 20px; font-size: 0.95rem; line-height: 1.6; color: var(--text-main); }
+        .t-keyword { color: var(--neon-purple); }
+        .t-string { color: var(--code-green); }
+        .t-func { color: #61afef; }
+        .t-comment { color: #5c6370; font-style: italic; }
+
+        /* --- ABOUT & STATS --- */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+        .about-card {
+            background: var(--card-glass); padding: 40px; border-radius: 15px;
+            border: 1px solid rgba(0, 242, 254, 0.1); backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .ai-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .stat-box {
+            background: rgba(0,0,0,0.4); padding: 25px 20px; border-radius: 10px;
+            border-left: 3px solid var(--neon-purple); text-align: center;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .stat-box h2 { color: var(--neon-cyan); font-size: 2.2rem; margin-bottom: 5px; }
+
+        /* --- SKILLS (NEURAL NODES) --- */
+        .skills-container { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        .skill-node {
+            background: rgba(15, 23, 42, 0.8); padding: 12px 25px; border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1); font-family: 'Fira Code', monospace;
+            display: flex; align-items: center; gap: 10px; transition: var(--transition);
+            cursor: pointer; position: relative; overflow: hidden;
+        }
+        .skill-node i { color: var(--neon-cyan); }
+        .skill-node:hover {
+            border-color: var(--neon-cyan); transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3); background: rgba(0, 242, 254, 0.05);
+        }
+
+        /* --- PROJECTS --- */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .project-card {
+            background: var(--card-glass); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 10px; padding: 35px 30px; transition: var(--transition);
+            position: relative; overflow: hidden;
+        }
+        .project-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--neon-cyan); transition: var(--transition);
+        }
+        .project-card:hover { transform: translateY(-10px); border-color: rgba(0, 242, 254, 0.3); }
+        .project-card:hover::before { box-shadow: 0 0 15px var(--neon-cyan); }
+        
+        .project-card h3 { font-size: 1.6rem; margin-bottom: 15px; color: var(--text-main); }
+
+        /* --- CONTACT --- */
+        .contact-layout { display: flex; gap: 50px; background: var(--card-glass); padding: 50px; border-radius: 15px; border: 1px solid rgba(176, 38, 255, 0.2); }
+        .c-info { flex: 1; }
+        .c-info p { margin-bottom: 25px; display: flex; align-items: center; gap: 15px; font-size: 1.1rem; }
+        .c-info i { color: var(--neon-purple); font-size: 1.5rem; text-shadow: 0 0 10px var(--neon-purple); }
+        .c-info a { color: var(--text-main); text-decoration: none; transition: 0.3s; }
+        .c-info a:hover { color: var(--neon-cyan); }
+
+        .c-form { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+        .c-form input, .c-form textarea, .c-form select {
+            width: 100%; padding: 15px; background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 5px;
+            font-family: 'Fira Code', monospace; transition: 0.3s;
+        }
+        .c-form input:focus, .c-form textarea:focus, .c-form select:focus {
+            outline: none; border-color: var(--neon-purple); box-shadow: 0 0 15px rgba(176, 38, 255, 0.2);
+        }
+        .c-form option { background: var(--bg-deep); color: #fff; }
+
+        /* Footer */
+        footer { text-align: center; padding: 30px; border-top: 1px solid rgba(255,255,255,0.05); font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-dim); }
+
+        /* Animation Classes */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            #home { flex-direction: column; text-align: center; margin-top: 80px; }
+            .about-grid, .contact-layout { flex-direction: column; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SYSTEM BOOT INTRO ANIMATION -->
+    <div id="intro-screen">
+        <div id="intro-container"></div>
+    </div>
+
+    <!-- Ambient Cursor Glow -->
+    <div id="cursor-glow"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#home" class="logo"><i class="fab fa-python"></i> SANJAY<span>.PY</span></a>
+        <ul class="nav-links">
+            <li><a href="#home">/home</a></li>
+            <li><a href="#about">/about</a></li>
+            <li><a href="#skills">/skills</a></li>
+            <li><a href="#projects">/projects</a></li>
+            <li><a href="#contact">/contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home">
+        <div class="hero-text fade-in">
+            <h3 class="code-font">> System.Initialize()</h3>
+            <h1>Sanjay S</h1>
+            <p>Architecting intelligent LLM agents, neutralizing hallucinations, and engineering scalable Python pipelines for the future.</p>
+            <a href="#projects" class="btn-glow">> Execute_Portfolio.py</a>
+        </div>
+
+        <div class="terminal fade-in">
+            <div class="terminal-header">
+                <div class="dot r"></div>
+                <div class="dot y"></div>
+                <div class="dot g"></div>
+            </div>
+            <div class="terminal-body code-font">
+                <span class="t-comment"># Initializing Developer Profile</span><br>
+                <span class="t-keyword">import</span> LLM_Protocols<br>
+                <span class="t-keyword">from</span> agents <span class="t-keyword">import</span> PlanAndExecute, RAG, RLHF<br><br>
+                
+                dev = LLM_Protocols.<span class="t-func">Engineer</span>(<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;name=<span class="t-string">"Sanjay S"</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;role=<span class="t-string">"LLM - Python Engineer"</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;experience=[<span class="t-string">"Turing"</span>, <span class="t-string">"Outlier"</span>]<br>
+                )<br><br>
+
+                <span class="t-comment"># Running Optimization Tasks</span><br>
+                dev.<span class="t-func">reduce_hallucinations</span>(framework=<span class="t-string">"Plan_and_Execute"</span>)<br>
+                <span id="typewriter"></span><span style="animation: blink 1s infinite;">_</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title fade-in">System <span>Architecture</span></h2>
+        <div class="about-grid fade-in">
+            <div class="about-card">
+                <h3 style="color: var(--neon-cyan); margin-bottom: 15px; font-family: 'Fira Code', monospace;">> whoami</h3>
+                <p style="margin-bottom: 15px; color: var(--text-dim); line-height: 1.8;">
+                    I am an <strong>LLM - Python Engineer</strong> holding a B.Tech in Artificial Intelligence & Data Science with a specialization in Cybersecurity. Currently excelling at <strong>Turing</strong> and contributing as a Freelance Data Annotator at <strong>Outlier</strong>, I design RL Gym-based agentic systems and optimize LLM behavior through rigorous RLHF and SFT protocols.
+                </p>
+                <p style="color: var(--text-dim); line-height: 1.8;">
+                    My core directive is to build custom LLM tools using function calling, enabling autonomous task execution via Plan-and-Execute frameworks to derive actionable insights from massive datasets.
+                </p>
+            </div>
+            
+            <!-- 2x2 Clean Stats Grid -->
+            <div class="ai-stats">
+                <div class="stat-box">
+                    <h2>1.5+</h2>
+                    <p class="code-font" style="color: var(--text-dim); font-size: 0.85rem;">Yrs @ Turing</p>
+                </div>
+                <div class="stat-box">
+                    <h2>1.5+</h2>
+                    <p class="code-font" style="color: var(--text-dim); font-size: 0.85rem;">Yrs Freelance @ Outlier</p>
+                </div>
+                <div class="stat-box" style="border-left: 3px solid var(--neon-cyan);">
+                    <h2>91%</h2>
+                    <p class="code-font" style="color: var(--text-dim); font-size: 0.85rem;">Model Accuracy</p>
+                </div>
+                <div class="stat-box" style="border-left: 3px solid var(--neon-cyan);">
+                    <h2>3x</h2>
+                    <p class="code-font" style="color: var(--text-dim); font-size: 0.85rem;">Hackathon Finalist</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2 class="section-title fade-in">Neural <span>Nodes</span></h2>
+        <div class="skills-container fade-in">
+            <div class="skill-node"><i class="fab fa-python"></i> Python</div>
+            <div class="skill-node"><i class="fas fa-database"></i> SQL</div>
+            <div class="skill-node"><i class="fas fa-brain"></i> RLHF & SFT</div>
+            <div class="skill-node"><i class="fas fa-network-wired"></i> Agentic AI (Plan & Execute) and (ReAct)</div>
+            <div class="skill-node"><i class="fas fa-code-branch"></i> Function Calling</div>
+            <div class="skill-node"><i class="fas fa-terminal"></i> Prompt Engineering</div>
+            <div class="skill-node"><i class="fas fa-layer-group"></i> Hugging Face</div>
+            <div class="skill-node"><i class="fas fa-bolt"></i> PySpark</div>
+            <div class="skill-node"><i class="fas fa-chart-pie"></i> Power BI</div>
+            <div class="skill-node"><i class="fas fa-robot"></i> n8n Automation</div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2 class="section-title fade-in">Deployed <span>Models</span></h2>
+        <div class="project-grid fade-in">
+            <div class="project-card">
+                <h3>Gen 3 (Pipeline)</h3>
+                <p style="color: var(--text-dim); line-height: 1.7;">Engineered a cutting-edge multilingual Speech-to-Text and TTS pipeline using Python. Achieved a highly robust 91% transcription accuracy across three languages to enhance global linguistic accessibility.</p>
+            </div>
+            
+            <div class="project-card" style="border-left-color: var(--neon-purple);">
+                <h3>VIEWSPEX</h3>
+                <p style="color: var(--text-dim); line-height: 1.7;">A "Learning City" platform that gamifies and transforms education for rural students. It fosters digital connections and embraces advanced tech for fully inclusive learning (Website UI).</p>
+            </div>
+
+            <div class="project-card">
+                <h3>MECH IN TIME</h3>
+                <p style="color: var(--text-dim); line-height: 1.7;">Developed a rapid-response, professional on-the-spot vehicle repair service application. Designed complex backend logic to assist users efficiently anywhere, at any time.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title fade-in">Init <span>Connection</span></h2>
+        <div class="contact-layout fade-in">
+            <div class="c-info">
+                <h3 style="font-size: 1.8rem; margin-bottom: 30px; font-family: 'Fira Code', monospace;">> ping -c 4 sanjay</h3>
+                <p><i class="fas fa-terminal"></i> <a href="mailto:sanjaysakthivel2003@gmail.com">sanjaysakthivel2003@gmail.com</a></p>
+                <p><i class="fas fa-phone-square-alt"></i> <span class="code-font">+91 6383973114</span></p>
+                <p><i class="fab fa-github-alt"></i> <a href="https://github.com/mr-pulsar" target="_blank">github.com/mr-pulsar</a></p>
+                <p><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/sanjay-s-b29820225/" target="_blank">linkedin/sanjay-s</a></p>
+                <br>
+                <p style="font-size: 0.9rem; color: var(--text-dim);">
+                    <em>*HR / Recruiters: Submitting this form will automatically open your default Email app for direct communication.</em>
+                </p>
+            </div>
+            
+            <form class="c-form" id="contactForm">
+                <input type="text" id="name" placeholder="<enter_your_name>" required>
+                <input type="email" id="email" placeholder="<enter_your_email>" required>
+                
+                <!-- Dropdown for HR -->
+                <select id="purpose" required>
+                    <option value="" disabled selected><select_purpose></option>
+                    <option value="HR / Recruitment">HR / Recruitment</option>
+                    <option value="Freelance / Contract">Freelance / Contract</option>
+                    <option value="General Query">General Query</option>
+                </select>
+
+                <textarea id="message" rows="4" placeholder="{ 'message': 'Type your query here...' }" required></textarea>
+                <button type="submit" class="btn-glow" style="width: 100%; border-color: var(--neon-purple); color: var(--neon-purple);">> Send_Payload()</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>> © 2024 Sanjay S. // LLM & Python Engineering. All nodes operational.</p>
+    </footer>
+
+    <!-- --- JAVASCRIPT --- -->
+    <script>
+        // 0. Intro Animation Logic
+        const introLines = [
+            "> Establishing secure connection...",
+            "> Booting LLM Node Protocols...",
+            "> Loading Agentic Workflows & Vectors...",
+            "> Access Granted. Welcome to Sanjay.PY Terminal."
+        ];
+        const introContainer = document.getElementById('intro-container');
+        const introScreen = document.getElementById('intro-screen');
+
+        window.addEventListener('load', () => {
+            let delay = 0;
+            introLines.forEach((line, index) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = 'intro-line';
+                    div.innerText = line;
+                    introContainer.appendChild(div);
+                }, delay);
+                delay += 600; // time between lines
+            });
+
+            // Fade out intro screen after sequence finishes
+            setTimeout(() => {
+                introScreen.style.opacity = '0';
+                setTimeout(() => introScreen.style.display = 'none', 800);
+            }, delay + 800);
+        });
+
+        // 1. Ambient Cursor Follower
+        const cursor = document.getElementById('cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // 2. Terminal Typewriter Effect
+        const text = "dev.build_custom_tools(output='Structured')\n> Output: Plan & Execute Optimized.";
+        let index = 0;
+        const speed = 50; 
+        const typeTarget = document.getElementById("typewriter");
+
+        function typeWriter() {
+            if (index < text.length) {
+                if(text.charAt(index) === '\n') {
+                    typeTarget.innerHTML += "<br>";
+                } else {
+                    typeTarget.innerHTML += text.charAt(index);
+                }
+                index++;
+                setTimeout(typeWriter, speed);
+            }
+        }
+        // Start typing after intro finishes
+        setTimeout(typeWriter, 3500);
+
+        // 3. Scroll Fade-In Animation (Intersection Observer)
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // 4. Contact Form Submission (Mailto Trigger for HR/Recruiters)
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get Values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const purpose = document.getElementById('purpose').value;
+            const msg = document.getElementById('message').value;
+
+            // Construct Email Body
+            const emailReceiver = "sanjaysakthivel2003@gmail.com";
+            const subject = encodeURIComponent(`Portfolio Inquiry: ${purpose} - From ${name}`);
+            const body = encodeURIComponent(`Hi Sanjay,\n\nI am contacting you regarding: ${purpose}.\n\nMy Name: ${name}\nMy Email: ${email}\n\nMessage:\n${msg}\n\nThanks!`);
+
+            // Open Default Email Client
+            window.location.href = `mailto:${emailReceiver}?subject=${subject}&body=${body}`;
+
+            // UI Feedback
+            const btn = this.querySelector('button');
+            btn.innerHTML = "> Redirecting_To_Mail_Client()";
+            btn.style.background = "var(--code-green)";
+            btn.style.color = "#000";
+            
+            setTimeout(() => {
+                this.reset();
+                btn.innerHTML = "> Send_Payload()";
+                btn.style.background = "transparent";
+                btn.style.color = "var(--neon-purple)";
+            }, 4000);
+        });
+    </script>
+</body>
+</html>
